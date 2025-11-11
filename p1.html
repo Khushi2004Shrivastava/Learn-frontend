@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title> BOM DOM</title>
+	<style>
+		body { font-family: Arial; margin: 20px;}
+		table, th, td {border:1px solid black; border-collapse: collapse; padding: 5px;}
+		button {margin: 5px; padding: 5px 10px;}
+	</style>
+</head>
+<body>
+
+<h2> BOM </h2>
+<button onclick="showBOM()"> SHOW BOM INFO</button>
+<p id="bomop"></p>
+
+<h2> DOM TREE</h2>
+<button onclick="buildtree()">build tree</button>
+<button onclick="cleartree()">clear tree</button>
+<div id="treecontainer"></div>
+
+<h2> add row</h2>
+name: <input id="name">
+age: <input id="age" type="number">
+<button onclick="addrow()">add row</button>
+
+<table id="datatable">
+<tr><th>#</th><th>Name</th><th>Age</th></tr>
+</table>
+
+<h2> change text on button click</h2>
+<button id="changetxtbutton">click me</button>
+
+<script>
+function showBOM(){
+let info="";
+info+="Browser name:" + navigator.appName+"<br>";
+info+="Browser version:"+navigator.appVersion+"<br>";
+info+="current url:"+location.href+"<br>";
+document.getElementById("bomop").innerHTML=info;
+alert("this is alert from BOM");
+}
+
+function buildtree(){
+const container=document.getElementById("treecontainer");
+const div=document.createElement("div");
+div.innerHTML="<h3>created using DOM</h3><p> This content is added dynamically</p>";
+container.appendChild(div);
+}
+
+function cleartree(){
+document.getElementById("treecontainer").innerHTML="";
+}
+
+let count=1;
+function addrow(){
+const name=document.getElementById("name").value;
+const age=document.getElementById("age").value;
+
+if(name==="" || age===""){
+alert("please enter both name and age");
+return;
+}
+
+const table=document.getElementById("datatable");
+const row=table.insertRow();
+row.insertCell(0).innerHTML=count++;
+row.insertCell(1).innerHTML=name;
+row.insertCell(2).innerHTML=age;
+
+document.getElementById("name").value="";
+document.getElementById("age").value="";
+}
+
+const btn=document.getElementById("changetxtbutton");
+btn.addEventListener("click", function(){
+if(btn.textContent==="click me")
+btn.textContent="You clicked me";
+else
+btn.textContent="click me";
+});
+</script>
+
+</body>
+</html>
