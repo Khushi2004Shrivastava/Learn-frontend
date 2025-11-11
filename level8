@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Management - BOM DOM OOP Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 30px;
+      background-color: #f8f9fa;
+    }
+    h2 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+    input {
+      margin: 5px;
+      padding: 5px;
+    }
+    button {
+      margin: 5px;
+      padding: 6px 12px;
+      background-color: #007bff;
+      border: none;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    table {
+      margin-top: 20px;
+      border-collapse: collapse;
+      width: 80%;
+    }
+    table, th, td {
+      border: 1px solid #000;
+    }
+    th, td {
+      padding: 8px 10px;
+      text-align: center;
+    }
+    th {
+      background-color: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>🎓 Student Management System</h2>
+
+  <div>
+    <input type="text" id="name" placeholder="Enter Name">
+    <input type="number" id="age" placeholder="Enter Age">
+    <input type="number" id="marks" placeholder="Enter Marks">
+    <button onclick="addStudent()">Add Student</button>
+    <button onclick="loadStudents()">Load Students</button>
+    <button onclick="clearAll()">Clear All</button>
+  </div>
+
+  <table id="studentTable">
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Age</th>
+      <th>Marks</th>
+      <th>Grade</th>
+    </tr>
+  </table>
+
+  <script>
+    // ---------- CLASS DEFINITIONS ----------
+    class Person {
+      constructor(name, age) {
+        this.name = name;
+        this.age = age;
+      }
+
+      showDetails() {
+        return `Name: ${this.name}, Age: ${this.age}`;
+      }
+    }
+
+    class Student extends Person {
+      constructor(name, age, marks) {
+        super(name, age);
+        this.marks = marks;
+        this.grade = this.calculateGrade();
+      }
+
+      calculateGrade() {
+        if (this.marks >= 90) return "A";
+        else if (this.marks >= 75) return "B";
+        else if (this.marks >= 50) return "C";
+        else return "F";
+      }
+
+      showDetails() {
+        return `${super.showDetails()}, Marks: ${this.marks}, Grade: ${this.grade}`;
+      }
+    }
+
+    // ---------- GLOBAL VARIABLES ----------
+    let students = [];
+
+    // ---------- FUNCTIONS ----------
+    function addStudent() {
+      const name = document.getElementById("name").value.trim();
+      const age = document.getElementById("age").value;
+      const marks = document.getElementById("marks").value;
+
+      if (!name || !age || !marks) {
+        alert("Please fill all fields!");
+        return;
+      }
+
+      const newStudent = new Student(name, parseInt(age), parseInt(marks));
+      students.push(newStudent);
+
+      saveToLocalStorage();
+      displayStudents();
+
+      // Clear input fields
+      document.getElementById("name").value = "";
+      document.getElementById("age").value = "";
+      document.getElementById("marks").value = "";
+    }
+
+    function displayStudents() {
+      const table = document.getElementById("studentTable");
+
+      // Remove old rows except header
+      while (table.rows.length > 1) {
+        table.deleteRow(1);
+      }
+
+      students.forEach((s, index) => {
+        const row = table.insertRow();
+        row.insertCell(0).innerText = index + 1;
+        row.insertCell(1).innerText = s.name;
+        row.insertCell(2).innerText = s.age;
+        row.insertCell(3).innerText = s.marks;
+        row.insertCell(4).innerText = s.grade;
+      });
+    }
+
+    function saveToLocalStorage() {
+      localStorage.setItem("students", JSON.stringify(students));
+    }
+
+    function loadStudents() {
+      const saved = JSON.parse(localStorage.getItem("students")) || [];
+      students = saved.map(s => new Student(s.name, s.age, s.marks));
+      displayStudents();
+    }
+
+    function clearAll() {
+      if (confirm("Are you sure you want to delete all records?")) {
+        students = [];
+        localStorage.removeItem("students");
+        displayStudents();
+      }
+    }
+
+    // ---------- INITIAL LOAD ----------
+    window.onload = loadStudents;
+  </script>
+
+</body>
+</html>
