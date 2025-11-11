@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>JavaScript Tasks</title>
+<style>
+    body { font-family: Arial; margin: 30px; background: #f4f4f4; }
+    h2 { color: #333; border-bottom: 2px solid #555; padding-bottom: 5px; }
+    button { padding: 6px 12px; margin: 6px; cursor: pointer; border: none; background: #007BFF; color: white; border-radius: 4px; }
+    input { padding: 5px; margin: 5px; }
+    div.task { background: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 5px #ccc; }
+    p.output { background: #eef; padding: 10px; border-radius: 6px; }
+</style>
+</head>
+<body>
+
+<h1>JavaScript Tasks</h1>
+
+<!-- Task 1: Random OTP -->
+<div class="task">
+    <h2>Task 1: Random OTP Generator</h2>
+    <button onclick="generateOTP()">Generate OTP</button>
+    <p id="otpOutput" class="output"></p>
+</div>
+
+<!-- Task 2: Date and Time -->
+<div class="task">
+    <h2>Task 2: Display Current Date and Time</h2>
+    <button onclick="showDateTime()">Show Date & Time</button>
+    <p id="dateTimeOutput" class="output"></p>
+</div>
+
+<!-- Task 3: Map Object -->
+<div class="task">
+    <h2>Task 3: Working with Map</h2>
+    <button onclick="mapOperations()">Perform Map Operations</button>
+    <p id="mapOutput" class="output"></p>
+</div>
+
+<!-- Task 4: Email Validation -->
+<div class="task">
+    <h2>Task 4: Email Validation using Regex</h2>
+    <input type="text" id="emailInput" placeholder="Enter your email">
+    <button onclick="validateEmail()">Validate</button>
+    <p id="emailOutput" class="output"></p>
+</div>
+
+<!-- Task 5: Set Object -->
+<div class="task">
+    <h2>Task 5: Working with Set</h2>
+    <input type="text" id="setInput" placeholder="Enter comma separated values">
+    <button onclick="workWithSet()">Process Set</button>
+    <p id="setOutput" class="output"></p>
+</div>
+
+<script>
+// ---------------- Task 1: Random OTP Generator ----------------
+function generateOTP() {
+    let otp = Math.random() * 900000 + 100000;  // ensures 6 digits
+    otp = parseInt(otp.toFixed(0));
+    document.getElementById("otpOutput").innerHTML = "Generated OTP: <b>" + otp + "</b>";
+}
+
+// ---------------- Task 2: Display Current Date and Time ----------------
+function showDateTime() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    const seconds = now.getSeconds();
+    const formattedDate = `${year}-${month}-${day}`;
+    const formattedTime = `${hours}:${minutes}:${seconds}`;
+    document.getElementById("dateTimeOutput").innerHTML = `Date: <b>${formattedDate}</b><br>Time: <b>${formattedTime}</b>`;
+}
+
+// ---------------- Task 3: Working with Map ----------------
+function mapOperations() {
+    const students = new Map();
+    students.set("Khushi", 95);
+    students.set("Aarav", 88);
+    students.set("Riya", 92);
+
+    // Add new entry
+    students.set("Neha", 90);
+    // Delete one entry
+    students.delete("Aarav");
+
+    let output = "Students Map:<br>";
+    students.forEach((marks, name) => {
+        output += `${name} → ${marks}<br>`;
+    });
+
+    output += "<br>Does Riya exist? " + students.has("Riya");
+    output += "<br>Total entries: " + students.size;
+
+    document.getElementById("mapOutput").innerHTML = output;
+    console.log("Map Content:", students);
+}
+
+// ---------------- Task 4: Email Validation ----------------
+function validateEmail() {
+    const email = document.getElementById("emailInput").value.trim();
+    const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}$/;
+    const isValid = pattern.test(email);
+    document.getElementById("emailOutput").innerHTML = isValid
+        ? "✅ Valid Email Address"
+        : "❌ Invalid Email Format";
+}
+
+// ---------------- Task 5: Working with Set ----------------
+function workWithSet() {
+    const input = document.getElementById("setInput").value;
+    const values = input.split(",").map(v => v.trim());
+    const uniqueSet = new Set(values);
+    let output = "Unique Values:<br>";
+    uniqueSet.forEach(v => output += v + "<br>");
+    output += `<br>Set Size: ${uniqueSet.size}`;
+    document.getElementById("setOutput").innerHTML = output;
+}
+</script>
+
+</body>
+</html>
